@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/styles/style.css">
+    <title>Joy School English Screener</title>
+
+    <script
+    src="https://code.jquery.com/jquery-3.6.0.min.js"
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+    crossorigin="anonymous">
+    </script>
+</head>
+<body>
+    <audio id="selected-audio" preload="auto">
+       <source src="/interface/audio/selected_sfx.mp3" type="audio/mpeg" />
+    </audio>
+    <audio id="prompt-audio" preload="auto">
+        <source src="<%= audioPrompt %> " type="audio/mpeg" />
+      </audio>
+    <div class="main-container">
+        <div class="options-container">
+            <% for(var i=0; i<options.length; i++) { %> 
+                <div id="btn-<%= parseInt([i])+1 %>" class="btn"  onclick="selected(<%= parseInt([i])+1 %>)"><img id="option-<%= parseInt([i])+1 %>" class="option" src="<%= options[i] %>" alt="option"></div>
+            <% } %> 
+        </div>
+       
+    </div>
+    <!-- <div class="listen-again">
+        <button>
+            <img src="/interface/listen_again.png">
+        </button>
+    </div> -->
+    <footer>
+        <div id="debug-window" style="visibility: hidden;">
+          <p>Section: <span id="section"></span></p>
+          <p>Sub Section: <span id="sub-section"></span></p>
+          <p>Question: <span id="question">2</span></p>
+          <p>Target: <span id="target">target</span></p>
+          <p>Score: <span id="score">0</span></p>
+        </div>
+        <div class="progress-container">
+          <div class="progress-bar">
+            <div class="progress-dot"></div>
+            <div class="progress-dot"></div>
+            <div class="progress-dot"></div>
+            <div class="progress-dot"></div>
+            <div class="progress-dot"></div>
+            <div class="progress-dot"></div>
+            <div class="progress-dot"></div>
+            <div class="progress-dot"></div>
+            <div class="progress-dot"></div>
+            <div class="progress-dot"></div>
+          </div>
+        </div>
+      </footer>
+    <script>
+        let cursor = true;
+        let _question = {};
+
+        //INFO Roate Selected Card
+        function selected(id) {
+            $("#btn-" + id).addClass('rotate')
+            $("#btn-" + id).delay(1000).queue(() => {$("#btn-" + id).removeClass('rotate').dequeue()})
+            playCorrect();
+            next();
+            toggleCursor();
+        }
+
+        //INFO Plays correct SFX
+        function playCorrect() {
+            let audio = document.getElementById("selected-audio");
+            audio.pause();
+            audio.currentTime =  0;
+            audio.play();
+        }
+
+        //INFO Get Next Question
+        function next() {
+            // play audio prompt end point?
+            fetch('/next').then(response => response.json())
+                .then(data => {
+                    _question = data
+                    console.log("next question: \n" + data)
+                    return data
+                })
+                .then(d => {
+                for(var i = 0; i < 3; i++) {
+                    //$("#option-1").attr("src", d.iconsArray[i])
+                    document.getElementById("option-" + (i + 1)).src = d.iconsArray[i]
+                    console.log('item: ' + d.iconsArray[i]);
+                }
+                })
+                .catch(e => console.log("Next Question Not Returned. Error Code:\n" + e))    
+                
+            function loadImages(data) {
+                let icons = [];
+                for(var i = 0; i < data.icons.length; i++) {
+                    icons.push(data.icons[i])
+                    $("#option-" + (i + 1)).attr("src", data.icons[i])
+                }
+                
+            }
+        }
+
+        //? Toggles users input
+        function toggleCursor() {
+            cursor = !cursor;
+            if (!cursor) {
+            console.log("cursor disabled.");
+            $("body").css("pointer-events", "none");
+            } else {
+            console.log("cursor enabled.");
+            $("body").css("pointer-events", "auto");
+            }
+        }
+    </script>
+</body>
+</html>
