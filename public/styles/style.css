@@ -1,0 +1,163 @@
+:root {
+  --dark-blue: blue;
+  --light-blue: aqua;
+  --red: red;
+  --gold: gold;
+}
+
+body {
+  display: grid;
+  grid-template-rows: 5fr 1fr;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  padding: 0;
+  margin: 0;
+}
+.main-container {
+    justify-self:  center;
+    /*!! only when vertical */
+  max-width: 95%; 
+  background-color: aquamarine;
+  border: 10px solid rgb(7, 189, 128);
+  border-radius: 20px;
+  width: 100%; /* !! use this only for Full Screen Web */
+}
+
+.options-container {
+  display: grid;
+  
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(175px, 1fr)
+  ); /* 175 mobile 225 full */
+  gap: 3vw;
+  margin: 3vw;
+}
+
+.btn {
+  background-color: white;
+  border-radius: 10px;
+  padding: 30px;
+  box-shadow: 16px 16px 12px 1px rgba(37, 38, 36, 0.16);
+}
+
+.listen-again button {
+  /* !! use this only for Full Screen Web */
+  /* position: absolute; 
+    top: 700px;
+    left: 1700px; */
+  border: 0;
+  border-radius: 50%;
+  box-shadow: 16px 16px 12px 1px rgba(37, 38, 36, 0.16);
+}
+
+img {
+  max-width: 100%;
+}
+
+#debug-window {
+  position: absolute;
+  bottom: 45px;
+  background-color: white;
+  width: 250px;
+}
+#debug-window p {
+  padding: 5px;
+}
+
+.progress-container {
+  display: flex;
+  justify-content: center;
+}
+
+.progress-bar {
+  display: flex;
+  background-color: white;
+  height: 10vh;
+  min-width: 85vh;
+  /* border-radius: 10px 10px 0 0; */
+  border-radius: 50px;
+  justify-content: space-around;
+  align-items: center;
+  margin-bottom: 8vh;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.progress-dot {
+  width: 6vh;
+  height: 6vh;
+  background-color: #ededed;
+  /* border: solid 1px #6df20e; */
+  /* box-shadow: 10px -10px  rgba(0,0,0,0.6);
+    -moz-box-shadow: 10px -10px  rgba(0,0,0,0.6);
+    -webkit-box-shadow: 10px -10px  rgba(0,0,0,0.6);
+    -o-box-shadow: 10px -10px  rgba(0,0,0,0.6); */
+  border-radius: 100px;
+}
+
+.progress-dot.correct {
+  background-color: #72da28;
+}
+
+.progress-dot.incorrect {
+  background-color: #da3428;
+}
+
+/* region Animations */
+.rotate {
+  animation: rotation 0.25s linear 2;
+}
+
+@keyframes rotation {
+  from {
+    transform: rotateY(0deg);
+  }
+  to {
+    transform: rotateY(359deg);
+  }
+}
+
+#debug-window {
+  position: absolute;
+  bottom: 45px;
+  background-color: white;
+  width: 250px;
+}
+#debug-window p {
+  padding: 5px;
+}
+
+@media screen and (orientation: portrait) { 
+    html {
+      /* Rotate the content container */
+      transform: rotate(-90deg);
+      transform-origin: left top;
+      /* Set content width to viewport height */
+      width: 100vh;
+      /* Set content height to viewport width */
+      height: 100vw;
+      overflow-x: hidden;
+      position: absolute;
+      top: 100%;
+      left: 0;
+    }
+  }
+/* #endregion */
+
+/* Rotation for clicked icon holder */
+.rotate {
+    animation: rotation 0.25s linear 2;
+  }
+  
+  @keyframes rotation {
+    from {
+      transform: rotateY(0deg);
+    }
+    to {
+      transform: rotateY(359deg);
+    }
+  }
+  
+  /* #endregion */
